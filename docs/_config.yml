@@ -2,8 +2,7 @@ title: Currency Converter
 description: This is the technical documentation of the Currency Converter
 theme: just-the-docs
 
-baseurl: "/"
-url: "https://docs.kannadev.com"
+url: kannadev.github.io
 
 aux_links:
   Template Repository: https://github.com/just-the-docs/just-the-docs-template
