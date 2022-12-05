@@ -1,6 +1,6 @@
 title: Currency Converter
 description: This is the technical documentation of the Currency Converter
-theme: just-the-docs
+remote_theme: pmarsceill/just-the-docs
 
 domain: kannadev.com
 url: kannadev.com
