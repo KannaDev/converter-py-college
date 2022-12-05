@@ -4,7 +4,6 @@ remote_theme: pmarsceill/just-the-docs
 
 domain: docs.kannadev.com
 url: docs.kannadev.com
-baseurl: /docs/
 
 aux_links:
   Template Repository: https://github.com/just-the-docs/just-the-docs-template
