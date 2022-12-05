@@ -2,8 +2,9 @@ title: Currency Converter
 description: This is the technical documentation of the Currency Converter
 remote_theme: pmarsceill/just-the-docs
 
-domain: docs.kannadev.com
-url: docs.kannadev.com
+domain: "docs.kannadev.com"
+url: "https://docs.kannadev.com/"
+baseurl: "/"
 
 aux_links:
   Template Repository: https://github.com/just-the-docs/just-the-docs-template
