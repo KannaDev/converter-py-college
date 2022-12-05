@@ -1,0 +1,251 @@
+---
+title: Technical Documentation
+layout: home
+---
+
+# This page covers the technical documentation of the program explaining the functions and how they work.
+
+- Main Screen
+  
+The program has a main page which allows you to select the login button, which then calls the function of the login page.
+
+{% highlight py %}
+def main_account_screen():
+    global main_screen
+    main_screen = Tk()
+    main_screen.geometry("300x150")
+    main_screen.title("Account Login")
+    Label(text="Select Login", bg="pink", width="300",
+          height="2", font=("Calibri", 13)).pack()
+    Label(text="").pack()
+    Button(text="Login", height="2", width="30", command=login).pack()
+    main_screen.mainloop()
+
+main_account_screen()
+{% endhighlight %}
+
+This is the only function which exists in the code for the main screen, as it has no functionality other than to allow you to navigate to the login page.
+
+- Login
+
+To login, the program calls multiple functions at different steps to open the login screen, and then verify the login is correct. If incorrect it wil display the necessary prompt. And if correct it will launch the currency converter.
+
+The first function is the window itself.
+
+{% highlight py %}
+def login():
+    global login_screen
+    login_screen = Toplevel(main_screen)
+    login_screen.title("Login")
+    login_screen.geometry("300x250")
+    Label(login_screen, text="Please enter details below to login").pack()
+    Label(login_screen, text="").pack()
+
+    global username_verify
+    global password_verify
+
+    username_verify = StringVar()
+    password_verify = StringVar()
+
+    global username_login_entry
+    global password_login_entry
+
+    Label(login_screen, text="Username * ").pack()
+    username_login_entry = Entry(login_screen, textvariable=username_verify)
+    username_login_entry.pack()
+    Label(login_screen, text="").pack()
+    Label(login_screen, text="Password * ").pack()
+    password_login_entry = Entry(
+        login_screen, textvariable=password_verify, show='*')
+    password_login_entry.pack()
+    Label(login_screen, text="").pack()
+    Button(login_screen, text="Login", width=10,
+           height=1, command=login_verify).pack()
+{% endhighlight %}
+
+Now for veryfying the username and password, the following functions are used.
+
+{% highlight py %}
+def login_verify():
+    username = "default"
+    password = "password"
+
+    # Login by checking if the username and password are correct by checking the variables given, if incorrect, don't open the variable "calculator"
+    if username_verify.get() == username and password_verify.get() == password:
+        main_screen.destroy()
+        calculator()
+    else:
+        user_not_found()
+
+
+# Designing popup for login success
+
+def login_sucess():
+    global login_success_screen
+    login_success_screen = Toplevel(login_screen)
+    login_success_screen.title("Success")
+    login_success_screen.geometry("150x100")
+    Label(login_success_screen, text="Login Success").pack()
+    Button(login_success_screen, text="OK",
+           command=delete_login_success).pack()
+
+# Designing popup for login invalid password
+
+
+def password_not_recognised():
+    global password_not_recog_screen
+    password_not_recog_screen = Toplevel(login_screen)
+    password_not_recog_screen.title("Success")
+    password_not_recog_screen.geometry("150x100")
+    Label(password_not_recog_screen, text="Invalid Password ").pack()
+    Button(password_not_recog_screen, text="OK",
+           command=delete_password_not_recognised).pack()
+
+# Designing popup for user not found
+
+
+def user_not_found():
+    global user_not_found_screen
+    user_not_found_screen = Toplevel(login_screen)
+    user_not_found_screen.title("Success")
+    user_not_found_screen.geometry("150x100")
+    Label(user_not_found_screen, text="User Not Found").pack()
+    Button(user_not_found_screen, text="OK",
+           command=delete_user_not_found_screen).pack()
+
+# Deleting popups
+
+
+def delete_login_success():
+    login_success_screen.destroy()
+
+
+def delete_password_not_recognised():
+    password_not_recog_screen.destroy()
+
+
+def delete_user_not_found_screen():
+    user_not_found_screen.destroy()
+{% endhighlight %}
+
+- Currency Converter
+
+While the entire currency converter uses the following code.
+
+{% highlight py %}
+def calculator():
+    global converting
+    window = Tk()
+
+# creating the main window
+# this gives the window the width(310), height(320) and the position(center)
+    window.geometry('310x340+500+200')
+# this is the title for the window
+    window.title('Currency Converter')
+# this will make the window not resizable, since height and width is FALSE
+    window.resizable(height=FALSE, width=FALSE)
+# this runs the window infinitely until it is closed
+
+# colors for the application
+    primary = "pink"
+    secondary = '#0083FF'
+    white = '#FFFFFF'
+
+# Where USD is the base currency you want to use
+    data = {
+        # exchange rates
+    }
+
+    def convert_currency():
+        destination = to_currency_combo.get()
+        amount = amount_entry.get()
+        DICT = data.get(destination, None)
+        converted_result = float(DICT)*float(amount)
+
+        formatted_result = f'{converted_result} {destination}'
+        result_label.config(text=formatted_result)
+
+    def clear():
+        result_label.config(text="")
+        amount_entry.delete(0, END)
+# converting the currencies to dictionaries
+    currencies = dict(data)
+
+# the top frame
+    top_frame = Frame(window, bg=primary, width=300, height=80)
+    top_frame.grid(row=0, column=0)
+# label for the text Currency Converter
+    name_label = Label(top_frame, text='Currency Converter', bg=primary,
+                       fg=white, pady=30, padx=24, justify=CENTER, font=('Poppins 20 bold'))
+    name_label.grid(row=0, column=0)
+
+# the top frame
+    top_frame = Frame(window, bg=primary, width=300, height=80)
+    top_frame.grid(row=0, column=0)
+# label for the text Currency Converter
+    name_label = Label(top_frame, text='Currency Converter', bg=primary,
+                       fg=white, pady=30, padx=24, justify=CENTER, font=('Poppins 20 bold'))
+    name_label.grid(row=0, column=0)
+# the bottom frame
+
+    bottom_frame = Frame(window, width=300, height=250)
+    bottom_frame.grid(row=1, column=0)
+
+# the entry for the from
+    from_currency_label = Label(
+        bottom_frame, text='FROM: Pounds', font=('Poppins 10 bold'), justify=LEFT)
+    from_currency_label.place(x=5, y=10)
+# the entry for the to_currency
+
+    to_currency_label = Label(bottom_frame, text='TO:', font=(
+        'Poppins 10 bold'), justify=RIGHT)
+    to_currency_label.place(x=160, y=10)
+    to_currency_combo = ttk.Combobox(bottom_frame, values=list(
+        currencies.keys()), width=14, font=('Poppins 10 bold'))
+    to_currency_combo.place(x=160, y=30)
+
+# the label for AMOUNT
+    amount_label = Label(bottom_frame, text='AMOUNT:',
+                         font=('Poppins 10 bold'))
+    amount_label.place(x=5, y=55)
+# entry for amount
+
+    # tkinter check if the entry is float
+    import re
+
+    def validate(string):
+        regex = re.compile(r"(\+|\-)?[0-9.]*$")
+        result = regex.match(string)
+        return (string == ""
+                or (string.count('+') <= 1
+                    and string.count('-') <= 1
+                    and string.count('.') <= 1
+                    and result is not None
+                    and result.group(0) != ""))
+
+    def on_validate(P):
+        return validate(P)
+
+    amount_entry = Entry(bottom_frame, width=25, font=(
+        'Poppins 15 bold'), validate='key')
+    vcmd = (amount_entry.register(on_validate), '%P')
+    amount_entry.config(validatecommand=vcmd)
+    amount_entry.place(x=5, y=80)
+
+# an empty label for displaying the result
+    result_label = Label(bottom_frame, text='', font=('Poppins 10 bold'))
+    result_label.place(x=5, y=115)
+# an empty label for displaying the time
+    time_label = Label(bottom_frame, text='', font=('Poppins 10 bold'))
+    time_label.place(x=5, y=135)
+# the clickable button for converting the currency
+    convert_button = Button(bottom_frame, text="CONVERT", bg=secondary, fg=white, font=(
+        'Poppins 10 bold'), command=convert_currency)
+    convert_button.place(x=5, y=165)
+# the clickable button for clearing the result
+    clear_button = Button(bottom_frame, text="Clear", bg=secondary, fg=white, font=(
+        'Poppins 10 bold'), command=clear)
+    clear_button.place(x=240, y=165)
+{% endhighlight %}
+
+This documentation should cover what is necessary for the assignment.
